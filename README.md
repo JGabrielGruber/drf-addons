@@ -1,4 +1,4 @@
-# drf-addons
+# drf-addons-plus
 
 **Some magic to the base Django REST Framework**
 
@@ -23,7 +23,7 @@ This project provides some extra functionalities to be used with [Django REST Fr
 
 Install using pip...
 ```sh
-pip install drf_addons
+pip install drf_addons_plus
 ```
 
 ---
@@ -41,7 +41,7 @@ class FooModel(models.Model):
 
 * `serializers.py`:
 ```py
-from drf_addons import serializers
+from drf_addons_plus import serializers
 
 from .models import FooModel
 
@@ -55,8 +55,8 @@ class FooSerializer(serializers.DynamicFieldsModelSerializer):
 * `views.py`:
 ```py
 from rest_framework import filters
-from drf_addons import filters as filters_plus
-from drf_addons import viewsets
+from drf_addons_plus import filters as filters_plus
+from drf_addons_plus import viewsets
 
 from .models import FooModel
 from .serializers import FooSerializer

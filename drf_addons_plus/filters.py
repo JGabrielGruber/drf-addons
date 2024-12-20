@@ -292,7 +292,7 @@ class FieldsFilter(BaseFilterBackend):
             conditions = (
                 reduce(
                     operator.or_,
-                    (models.Q({orm_lookup: term}) for orm_lookup in orm_lookups)
+                    (models.Q(**{orm_lookup: term}) for orm_lookup in orm_lookups)
                 ) for term in search_terms
             )
             queryset = queryset.filter(reduce(operator.and_, conditions))

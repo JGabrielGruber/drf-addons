@@ -37,6 +37,7 @@ from django.db import models
 class FooModel(models.Model):
     name = models.CharField(max_length=100)
     status = models.BooleanField()
+    category = models.CharField(choices=['foo', 'bar'])
 ```
 
 * `serializers.py`:
@@ -49,7 +50,7 @@ from .models import FooModel
 class FooSerializer(serializers.DynamicFieldsModelSerializer):
     class Meta:
         model = FooModel
-        fields = ['name', 'status']
+        fields = ['name', 'status', 'category']
 ```
 
 * `views.py`:
@@ -66,9 +67,10 @@ class FooViewSet(viewsets.FieldsModelViewSet):
     queryset = FooModel.objects.all()
     serializer_class = FooSerializer
     permission_classes = []
-    filter_backends = [filters.SearchFilter, filters_plus.ConditionalFilter]
+    filter_backends = [filters.SearchFilter, filters_plus.ConditionalFilter, filters_plus.FieldsFitlter]
     search_fields = ['name']
     conditional_fields = ['status']
+    filter_fields = ['category']
 ```
 
 
@@ -77,7 +79,8 @@ class FooViewSet(viewsets.FieldsModelViewSet):
 [
     {
         "name": "Bar",
-        "status": false
+        "status": false,
+        "category": "Foo",
     }
 ]
 ```
@@ -94,6 +97,17 @@ class FooViewSet(viewsets.FieldsModelViewSet):
 * Request `http://localhost:8000/foo/?conditional=status`:
 ```json
 []
+```
+
+* Request `http://localhost:8000/foo/?category="foo"`:
+```json
+[
+    {
+        "name": "Bar",
+        "status": false,
+        "category": "Foo",
+    }
+]
 ```
 
 ---

@@ -253,7 +253,7 @@ class FieldsFilter(BaseFilterBackend):
             if isinstance(queryset, models.QuerySet) and search_field in queryset.query.annotations:
                 continue
             parts = search_field.split(LOOKUP_SEP)
-            print(parts)
+
             for part in parts:
                 field = opts.get_field(part)
                 if hasattr(field, 'get_path_info'):
@@ -286,8 +286,6 @@ class FieldsFilter(BaseFilterBackend):
                 self.construct_search(str(field), queryset)
             ]
 
-            print(orm_lookups)
-
             # generator which for each term builds the corresponding search
             conditions = (
                 reduce(
@@ -295,7 +293,7 @@ class FieldsFilter(BaseFilterBackend):
                     (models.Q(**{orm_lookup: term}) for orm_lookup in orm_lookups)
                 ) for term in search_terms
             )
-            queryset = queryset.filter(reduce(operator.and_, conditions))
+            queryset = queryset.filter(reduce(operator.or_, conditions))
         return queryset
 
     def get_schema_fields(self, view):

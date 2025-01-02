@@ -2,10 +2,11 @@ from setuptools import setup, find_packages
 
 setup(
     name='drf_addons_plus',
-    version='0.3',
+    version='0.4',
     packages=find_packages(),
     install_requires=[
-        'djangorestframework>=3.0'
+        'djangorestframework>=3.0',
+        'celery>=5.3'
     ],
     author='José Gabriel Gruber',
     author_email='development@jgabrielgruber.dev',
